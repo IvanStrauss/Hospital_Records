@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             DoctorSeeder::class,
             PatientSeeder::class,
             AppointmentSeeder::class,
+            DoctorUserSeeder::class,
         ]);
 
         User::factory()->create([

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('role')->default('user')->after('email'); // or after 'password'
+            $table->string('role')->default('staff')->after('email'); // or after 'password'
         });
     }
 

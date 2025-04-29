@@ -59,9 +59,19 @@
   <div class="form-container">
     <div class="login-box">
       <h2 class="text-center text-primary mb-4">Login</h2>
+
+      <!-- ✅ Start form -->
       <form method="POST" action="{{ route('login') }}">
         @csrf
 
+        <!-- ✅ Show Session Error if Unauthorized Role -->
+        @if (session('error'))
+          <div class="alert alert-danger">
+            {{ session('error') }}
+          </div>
+        @endif
+
+        <!-- ✅ Show Validation Errors -->
         @if($errors->any())
           <div class="alert alert-danger">
             {{ $errors->first() }}
@@ -78,10 +88,13 @@
           <input type="password" name="password" id="password" class="form-control" required>
         </div>
 
-        <button type="submit" class="btn btn-primary w-100">Login</button>
+        <button type="submit" class="btn btn-primary w-100">
+          <i class="bi bi-box-arrow-in-right"></i> Login
+        </button>
       </form>
+      <!-- ✅ End form -->
+      
     </div>
   </div>
 </body>
 </html>
-

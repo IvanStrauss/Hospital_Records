@@ -8,10 +8,20 @@ use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\PatientController;
 use App\Http\Controllers\Admin\AppointmentController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Doctor\DoctorDashboardController;
+use App\Http\Controllers\Doctor\DoctorAppointmentController;
+use App\Http\Controllers\Doctor\DoctorPatientController;
+
+
 
 
 Route::get('/', function () {
     return view('auth.login');
+});
+
+Route::get('/layouts/doctor', function () {
+    return view('layouts.doctor');
 });
 
 Route::get('/admin/dashboard', function () {
@@ -134,6 +144,30 @@ Route::resource('/admin/user-management', UserController::class, [
         'destroy' => 'admin.user_management.destroy',
     ]
 ]);
+
+//doctor routing
+Route::prefix('doctor')->name('doctor.')->middleware('auth', 'role:doctor')->group(function () {
+    Route::get('/dashboard', [DoctorDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/appointments', [DoctorAppointmentController::class, 'index'])->name('my_appointments');
+    Route::get('/patients', [DoctorPatientController::class, 'index'])->name('patient_records');
+    Route::get('/confirm-appointments', [DoctorAppointmentController::class, 'confirm'])->name('confirm_appointments');
+});
+
+// Login routes
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.post');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// (Your admin routes and doctor routes here...)
+
+Route::prefix('doctor')->name('doctor.')->middleware(['auth', 'role:doctor'])->group(function () {
+    Route::get('/dashboard', [DoctorDashboardController::class, 'index'])->name('dashboard');
+});
+
+Route::prefix('doctor')->name('doctor.')->middleware(['auth', 'role:doctor'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
+
 
 
 
